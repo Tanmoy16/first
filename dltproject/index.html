@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLT Healthcare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('https://source.unsplash.com/1600x900/?healthcare,hospital') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 123, 255, 0.8);
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #ffeb3b;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #ffeb3b;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.5);
+            color: black;
+            outline: none;
+        }
+
+        button {
+            background: #ffeb3b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ffcc00;
+        }
+
+        ::placeholder {
+            color: black;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact Us</a>
+    </div>
+    
+    <div class="container">
+        <h1>DLT Healthcare</h1>
+        <form id="contactForm">
+            <input type="text" id="name" name="name" placeholder="Enter Name" required>
+            <input type="tel" id="mobile" name="mobile" placeholder="Enter Mobile Number" pattern="[0-9]{10}" required>
+            <input type="email" id="email" name="email" placeholder="Enter Email" required>
+            
+            <select id="hospitals" name="hospitals" required>
+                <option value="">Select a Hospital</option>
+                <option value="Hospital A">Hospital A</option>
+                <option value="Hospital B">Hospital B</option>
+                <option value="Hospital C">Hospital C</option>
+            </select>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = {
+                name: document.getElementById("name").value,
+                mobile: document.getElementById("mobile").value,
+                email: document.getElementById("email").value,
+                hospitals: document.getElementById("hospitals").value
+            };
+
+            fetch("http://127.0.0.1:8000/api/save_record/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert("Data saved successfully!");
+                    window.location.href = "success.html"; // Redirect to success page
+                } else {
+                    alert("Error saving data.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+</body>
+</html>
